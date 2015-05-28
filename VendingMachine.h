@@ -10,15 +10,18 @@ public:
 
 	std::string getItem(int listElementIndex) const;
 	int getInInventory(int listElementIndex) const;
+	double getCost(int listElementIndex) const;
 	double getCurrentCredit() const;
+	bool sufficientCreditCheck(int listElementIndex) const;
 	int getItemSlots() const;
 	void insertMoney(double insertedAmount);
-	void dispenseItem(int listElementIndex);
+	bool dispenseItem(int listElementIndex);
 	double ejectChange(double amountToEject);
 
 private:
 	struct inventoryStruct{
 		std::vector<std::string> item;
+		std::vector<double> cost;
 		std::vector<int> inInventory;
 	};
 
