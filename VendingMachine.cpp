@@ -10,11 +10,6 @@ VendingMachine::VendingMachine(){
 	currentCredit = 0.0;
 	randomInventoryGenerator(changeList, sodas);
 	int i = 0;
-	for each (std::string a in change.item){
-		std::cout << a << ": " << change.inInventory[i] << ", " << std::flush;
-		i++;
-	}
-
 }
 
 VendingMachine::~VendingMachine(){}
