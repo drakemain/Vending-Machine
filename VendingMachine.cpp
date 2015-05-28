@@ -1,41 +1,50 @@
 #pragma once
 #include "VendingMachine.h"
 #include <ctime>
-#include <iostream>
 
 VendingMachine::VendingMachine(){
-	std::string sodas[10] = { "Cola", "Cherry Cola", "Diet Cola", "Root Beer", "Lemon Lime", "Orange", "Grape", "Cherry", "Roid Energy", "Water" };
+	std::vector<std::string> sodas = { "Cola", "Cherry Cola", "Diet Cola", "Root Beer", "Lemon Lime", "Orange", "Grape", "Cherry", "RoidRage Energy", "Water" };
 	double changeList[4] = { .01, .05, .1, .25 };
-	sodaSlots = 10;
+	itemSlots = sodas.size();
 	currentCredit = 0.0;
 	randomInventoryGenerator(changeList, sodas);
-	int i = 0;
+}
+
+VendingMachine::VendingMachine(std::vector<std::string> customList){
+	double changeList[4] = { .01, .05, .1, .25 };
+	itemSlots = customList.size();
+	currentCredit = 0.0;
+	randomInventoryGenerator(changeList, customList);
 }
 
 VendingMachine::~VendingMachine(){}
 
-void VendingMachine::randomInventoryGenerator(double changeList[], std::string sodas[], int maxInventory){
+void VendingMachine::randomInventoryGenerator(double changeList[], std::vector<std::string> items, int maxInventory){
 	srand(time(0));
-	for (int i = 0; i < sodaSlots; i++){
-		sodaList.item.push_back(sodas[i]);
-		sodaList.inInventory.push_back(rand() % maxInventory);
-		if (i < sizeof(changeList)){
-			change.item.push_back(std::to_string(changeList[i]));
-			change.inInventory.push_back( ( rand() % 90 ) + 10 );
-		}
+	for (int i = 0; i < itemSlots; i++){
+		itemList.item.push_back(items[i]);
+		itemList.inInventory.push_back(rand() % maxInventory);
+	}
+	for (int i = 0; i < sizeof(changeList); i++){
+		change.item.push_back(std::to_string(changeList[i]));
+		change.inInventory.push_back((rand() % 90) + 10);
 	}
 }
 
-std::string VendingMachine::getSoda(int soda){
-	return this->sodaList.item[soda];
+std::string VendingMachine::getItem(int item) const{
+	return this->itemList.item[item];
 }
 
-int VendingMachine::getInInventory(int soda){
-	return this->sodaList.inInventory[soda];
+int VendingMachine::getInInventory(int item) const{
+	return this->itemList.inInventory[item];
 }
 
-double VendingMachine::getCurrentCredit(){
+double VendingMachine::getCurrentCredit() const{
 	return this->currentCredit;
+}
+
+int VendingMachine::getItemSlots() const{
+	return this->itemSlots;
 }
 
 void VendingMachine::insertMoney(double insertedAmount){
