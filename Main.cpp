@@ -2,20 +2,50 @@
 #include "VendingMachine.h"
 #include <iostream>
 #include <vector>
+#include <typeinfo>
 
 int main(){
 	VendingMachine sodaMachine;
 
+	int selection;
+
 	std::vector<std::string> snackList = { "Potato Chips", "Cheesey Poofs", "Uberitos" };
 	VendingMachine snackMachine(snackList);
 
-	for (int i = 0; i < sodaMachine.getItemSlots(); i++){
-		std::cout << sodaMachine.getItem(i) << ": " << sodaMachine.getInInventory(i) << std::endl;
+	system("CLS");
+
+	std::cout << "Select Machine:\n1: Soda Machine\n2: Snack Machine" << std::flush;
+	
+
+	try {
+		std::cin >> selection;
+		if (typeid(selection).name() != typeid(1).name()){
+			throw 1;
+		}
+		else if (selection < 1 || selection > 2){
+			throw 2;
+		}
+		else {
+			switch (selection){
+				case 1:
+					break;
+				case 2:
+					s
+			}
+		}
 	}
-	std::cout << std::endl;
-	for (int i = 0; i < snackMachine.getItemSlots(); i++){
-		std::cout << snackMachine.getItem(i) << ": " << snackMachine.getInInventory(i) << std::endl;
+	catch (int er){
+		switch (er){
+			case 1:
+				std::cout << "Bad selection. Must input a number." << std::endl;
+				break;
+			case 2:
+				std::cout << "Selection does not exist!" << std::endl;
+		}
+		system("PAUSE");
 	}
+	
+
 
 	return 0;
 }

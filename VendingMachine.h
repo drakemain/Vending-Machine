@@ -16,7 +16,7 @@ public:
 	int getItemSlots() const;
 	void insertMoney(double insertedAmount);
 	bool dispenseItem(int listElementIndex);
-	double ejectChange(double amountToEject);
+
 
 private:
 	struct inventoryStruct{
@@ -31,6 +31,6 @@ private:
 	inventoryStruct change;
 
 	void randomInventoryGenerator(double changeList[], std::vector<std::string> listOfSodas, int maxInventory = 11);
-	
+	double ejectChange();
 	
 };

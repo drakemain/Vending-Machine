@@ -1,6 +1,7 @@
 #pragma once
 #include "VendingMachine.h"
 #include <ctime>
+#include <iostream>
 
 VendingMachine::VendingMachine(){
 	std::vector<std::string> sodas = { "Cola", "Cherry Cola", "Diet Cola", "Root Beer", "Lemon Lime", "Orange", "Grape", "Cherry", "RoidRage Energy", "Water" };
@@ -49,7 +50,7 @@ double VendingMachine::getCurrentCredit() const{
 }
 
 bool VendingMachine::sufficientCreditCheck(int item) const{
-	if (this->currentCredit > this->itemList.cost[item]){ return true; }
+	if (this->currentCredit >= this->itemList.cost[item]){ return true; }
 	else{ return false; }
 }
 
@@ -62,9 +63,16 @@ void VendingMachine::insertMoney(double insertedAmount){
 }
 
 bool VendingMachine::dispenseItem(int item){
-	if (itemList.inInventory[item] > 0){
+	if (itemList.inInventory[item] > 0 && sufficientCreditCheck(item)){
 		this->itemList.inInventory[item] -= 1;
 		return true;
 	} else{ return false; }
 }
 
+
+
+//double VendingMachine::ejectChange(double changeToEject){
+	//currentCredit = 0.00;
+	//return changeToEject;
+
+//}
