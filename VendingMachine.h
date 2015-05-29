@@ -5,17 +5,20 @@ class VendingMachine{
 
 public:
 	VendingMachine();
-	VendingMachine(std::vector<std::string> customList);
+	VendingMachine(std::vector<std::string> customList, std::string customName);
 	~VendingMachine();
 
-	std::string getItem(int listElementIndex) const;
-	int getInInventory(int listElementIndex) const;
-	double getCost(int listElementIndex) const;
-	double getCurrentCredit() const;
-	bool sufficientCreditCheck(int listElementIndex) const;
-	int getItemSlots() const;
-	void insertMoney(double insertedAmount);
-	bool dispenseItem(int listElementIndex);
+	std::string getItem(int listElementIndex) const;		//returns name of item
+	int getInInventory(int listElementIndex) const;			//returns count of specific item
+	double getCost(int listElementIndex) const;				//returns cost of specific item
+	double getCurrentCredit() const;						//returns amount of credit user has input to the machine
+	
+	int getItemSlots() const;								//determines how many different items machine has capacity for
+	std::string getName() const;							//returns the name of the machine
+	
+	void insertMoney(double insertedAmount);				//allows user to input credit
+	bool dispenseItem(int listElementIndex);				//reduces inventory count of item by 1
+	double ejectChange();									//returns remaining credit and sets to 0
 
 
 private:
@@ -25,12 +28,13 @@ private:
 		std::vector<int> inInventory;
 	};
 
+	std::string name;
 	int itemSlots;
 	double currentCredit;
 	inventoryStruct itemList;
 	inventoryStruct change;
 
 	void randomInventoryGenerator(double changeList[], std::vector<std::string> listOfSodas, int maxInventory = 11);
-	double ejectChange();
-	
+	double ejectChange(double changeToEject);
+	bool sufficientCreditCheck(int listElementIndex) const;	//checks if the user has sufficient credit to purchase item
 };

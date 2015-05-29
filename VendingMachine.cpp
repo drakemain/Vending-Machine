@@ -1,20 +1,26 @@
 #pragma once
 #include "VendingMachine.h"
 #include <ctime>
-#include <iostream>
 
 VendingMachine::VendingMachine(){
+	this->name = "Soda Machine";
+	this->currentCredit = 0.0;
+	
 	std::vector<std::string> sodas = { "Cola", "Cherry Cola", "Diet Cola", "Root Beer", "Lemon Lime", "Orange", "Grape", "Cherry", "RoidRage Energy", "Water" };
 	double changeList[4] = { .01, .05, .1, .25 };
-	itemSlots = sodas.size();
-	currentCredit = 0.0;
+	
+	this->itemSlots = sodas.size();
+	
 	randomInventoryGenerator(changeList, sodas);
 }
 
-VendingMachine::VendingMachine(std::vector<std::string> customList){
+VendingMachine::VendingMachine(std::vector<std::string> customList, std::string newName){
+	this->name = newName;
+	this->itemSlots = customList.size();
+	this->currentCredit = 0.0;
+
 	double changeList[4] = { .01, .05, .1, .25 };
-	itemSlots = customList.size();
-	currentCredit = 0.0;
+
 	randomInventoryGenerator(changeList, customList);
 }
 
@@ -49,13 +55,12 @@ double VendingMachine::getCurrentCredit() const{
 	return this->currentCredit;
 }
 
-bool VendingMachine::sufficientCreditCheck(int item) const{
-	if (this->currentCredit >= this->itemList.cost[item]){ return true; }
-	else{ return false; }
-}
-
 int VendingMachine::getItemSlots() const{
 	return this->itemSlots;
+}
+
+std::string VendingMachine::getName() const{
+	return this->name;
 }
 
 void VendingMachine::insertMoney(double insertedAmount){
@@ -63,16 +68,24 @@ void VendingMachine::insertMoney(double insertedAmount){
 }
 
 bool VendingMachine::dispenseItem(int item){
-	if (itemList.inInventory[item] > 0 && sufficientCreditCheck(item)){
+	if (this->itemList.inInventory[item] > 0 && this->sufficientCreditCheck(item)){
 		this->itemList.inInventory[item] -= 1;
 		return true;
 	} else{ return false; }
 }
 
+double VendingMachine::ejectChange(double changeToEject){
+	this->currentCredit = 0.00;
+	return changeToEject;
+}
 
+double VendingMachine::ejectChange(){
+	double changeToDispense = this->currentCredit;
+	this->currentCredit = 0.00;
+	return changeToDispense;
+}
 
-//double VendingMachine::ejectChange(double changeToEject){
-	//currentCredit = 0.00;
-	//return changeToEject;
-
-//}
+bool VendingMachine::sufficientCreditCheck(int item) const{
+	if (this->currentCredit >= this->itemList.cost[item]){ return true; }
+	else{ return false; }
+}
