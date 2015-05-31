@@ -7,30 +7,31 @@ VendingMachine::VendingMachine(){
 	this->currentCredit = 0.0;
 	
 	std::vector<std::string> sodas = { "Cola", "Cherry Cola", "Diet Cola", "Root Beer", "Lemon Lime", "Orange", "Grape", "Cherry", "RoidRage Energy", "Water" };
+	std::vector<double> cost = { 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 2.25, 1.25 };
+	this->itemSlots = sodas.size();
+
 	double changeList[4] = { .01, .05, .1, .25 };
 	
-	this->itemSlots = sodas.size();
-	
-	randomInventoryGenerator(changeList, sodas);
+	randomInventoryGenerator(changeList, sodas, cost);
 }
 
-VendingMachine::VendingMachine(std::vector<std::string> customList, std::string newName){
+VendingMachine::VendingMachine(std::vector<std::string> customList, std::vector<double> cost, std::string newName){
 	this->name = newName;
 	this->itemSlots = customList.size();
 	this->currentCredit = 0.0;
 
 	double changeList[4] = { .01, .05, .1, .25 };
 
-	randomInventoryGenerator(changeList, customList);
+	randomInventoryGenerator(changeList, customList, cost, itemSlots);
 }
 
 VendingMachine::~VendingMachine(){}
 
-void VendingMachine::randomInventoryGenerator(double changeList[], std::vector<std::string> items, int maxInventory){
+void VendingMachine::randomInventoryGenerator(double changeList[], std::vector<std::string> items, std::vector<double> costList, int maxInventory){
 	srand(time(0));
 	for (int i = 0; i < itemSlots; i++){
 		itemList.item.push_back(items[i]);
-		itemList.cost.push_back(1.0);
+		itemList.cost.push_back(costList[i]);
 		itemList.inInventory.push_back(rand() % maxInventory);
 	}
 	for (int i = 0; i < sizeof(changeList); i++){

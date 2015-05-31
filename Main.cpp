@@ -12,9 +12,11 @@ bool inputIsValid(int);																				//checks input for validInput() error
 std::string formatMoney(double);																	//formats double/float to currency string (ex: $1.25)
 bool commenceVending(std::vector<VendingMachine*> VendingMachingList);								//initializes ultra-realistic vending machine simulation
 
+
 int main(){
-	std::vector<std::string> snackList = { "Potato Chips", "Cheesey Poofs", "Uberitos", "Bubba Gum", "Chocolate Bar", "Twinks" }; //a custom list for VendingMachine constructor
-	VendingMachine snackMachine(snackList, "Snack Machine");																	  //custom machine
+	std::vector<std::string> snackList = { "Potato Chips", "Cheesey Poofs", "Uberitos", "Bubba Gum", "Chocolate Bar", "Twinks" }; //a custom item list for VendingMachine constructor
+	std::vector<double> costList = { 1.25, 1.25, 1.25, .75, 1.00, 1.00 };														  //a custom cost list for VendingMachine costructor
+	VendingMachine snackMachine(snackList, costList, "Snack Machine");																	  //custom machine
 	VendingMachine sodaMachine;																									  //default (soda) machine
 
 	std::vector<VendingMachine*> VendingMachineList = { &snackMachine, &sodaMachine };											  //a vector containing VendingMachine object pointers
@@ -106,12 +108,12 @@ bool commenceVending(std::vector<VendingMachine*> VendingMachineList){
 	system("CLS");
 	int selection;
 
-	std::cout << "What would you like to do?\n" << std::endl;
+	std::cout << "You come across some vending machines. What would you like to do?\n" << std::endl;
 	for (unsigned int i = 0; i < VendingMachineList.size(); i++){
 		VendingMachine &machine = *VendingMachineList[i];
 		std::cout << i + 1 << ". " << machine.getName() << std::endl;
 	}
-	std::cout << "\nExamine a machine or\n" << VendingMachineList.size() + 1<< ". Go on with your day." << std::endl;
+	std::cout << "\nExamine a machine or\n" << VendingMachineList.size() + 1 << ". Go on with your day." << std::endl;
 	
 	selection = validInput(VendingMachineList.size() + 1);//prompt user for input
 	if (inputIsValid(selection)){
