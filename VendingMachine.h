@@ -35,6 +35,5 @@ private:
 	inventoryStruct change;
 
 	void randomInventoryGenerator(double changeList[], std::vector<std::string> listOfSodas, int maxInventory = 11);
-	double ejectChange(double changeToEject);
 	bool sufficientCreditCheck(int listElementIndex) const;	//checks if the user has sufficient credit to purchase item
 };

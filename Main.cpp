@@ -7,7 +7,7 @@
 void display(VendingMachine &machine);																//displays the contents of a machine
 void pay(VendingMachine &machine, std::vector<double> currencyList = { .01, .05, .10, .25, 1.00 }); //allows the user to insert credit into a specific machine
 void pause();																						//Waits for user to press enter before continuing
-int validInput(int maxValue, int minValue = 1);														//forces int inputs
+int validInput(int maxValue, int minValue = 1);														//forces int inputs and informs user of bad input
 bool inputIsValid(int);																				//checks input for validInput() error flag
 std::string formatMoney(double);																	//formats double/float to currency string (ex: $1.25)
 bool commenceVending(std::vector<VendingMachine*> VendingMachingList);								//initializes ultra-realistic vending machine simulation
@@ -39,22 +39,26 @@ void pay(VendingMachine &machine, std::vector<double> currencyList){
 	bool paying = true;
 
 	while (paying){
+		system("CLS");
+		std::cout << "The machine has a current credit of " << formatMoney(machine.getCurrentCredit()) << std::endl << std::endl;
 		for (unsigned int i = 0; i < currencyList.size(); i++){
-			std::cout << i + 1 << ". " << currencyList[i] << std::endl;
+			std::cout << i + 1 << ". " << formatMoney(currencyList[i]) << std::endl;
 		}
+		
+		std::cout << "\nInsert amount or\n"<< currencyList.size() + 1 << ". Go back" << std::endl;
 
-		int selection = validInput(9);
+		int selection = validInput(currencyList.size()+1);
 		if (inputIsValid(selection)){
-			if (selection == 9){ paying = false; }
-			else { machine.insertMoney(currencyList[selection]); }
+			if (selection == currencyList.size() + 1){ paying = false; }
+			else { machine.insertMoney(currencyList[selection - 1]); }
 		}
 	}
 }
 
 void pause(){
 	std::cout << "Press enter to continue..." << std::flush;
-	std::cin.get();
-	std::cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	std::cin.sync();
+	std::cin.ignore(INT_MAX, '\n');
 }
 
 std::string formatMoney(double amount){
@@ -88,8 +92,8 @@ int validInput(int maxValue, int minValue){
 			std::cout << "Selection does not exist!" << std::endl;
 			break;
 		}
-		return -100;
 		pause();
+		return -100;
 	}
 }
 
@@ -105,14 +109,64 @@ bool commenceVending(std::vector<VendingMachine*> VendingMachineList){
 	std::cout << "What would you like to do?\n" << std::endl;
 	for (unsigned int i = 0; i < VendingMachineList.size(); i++){
 		VendingMachine &machine = *VendingMachineList[i];
-		std::cout << i + 1 << ". Examine: " << machine.getName() << std::endl;
+		std::cout << i + 1 << ". " << machine.getName() << std::endl;
 	}
-	selection = validInput(2);
+	std::cout << "\nExamine a machine or\n" << VendingMachineList.size() + 1<< ". Go on with your day." << std::endl;
+	
+	selection = validInput(VendingMachineList.size() + 1);//prompt user for input
 	if (inputIsValid(selection)){
+		if (selection == VendingMachineList.size() + 1){//user selects exit
+			return false;
+		}
+
 		selection -= 1;
 		VendingMachine &machine = *VendingMachineList[selection];
-		display(machine);
-	} else{ pause(); }
+
+		int items = machine.getItemSlots();
+		bool examiningMachine = true;
+		while (examiningMachine){
+
+			system("CLS");
+			std::cout << "The contents of the machine are: \n" << std::endl;
+			
+			display(machine);
+
+			std::cout << "\nCurrent credit: " << formatMoney(machine.getCurrentCredit()) << '\n' << std::endl;
+
+			std::cout << "Select an item to purchase or \n" << items + 1 << ". Insert money\n" << items + 2 << ". Eject change\n" << items + 3 << ". Go back" << std::endl;
+			selection = validInput(items + 3);//prompt user to make selection
+			system("CLS");
+			if (inputIsValid(selection)){
+
+				if (selection == items + 3){//user selects go back
+					examiningMachine = false;
+				}
+
+				else if (selection > 0 && selection <= items){//user selects item to purchase
+					selection--;
+					std::cout << "You push the button corresponding to " << machine.getItem(selection) << '.' << std::endl;
+					if (machine.dispenseItem(selection)){
+						std::cout << "The machine dispensed " << machine.getItem(selection) << '.' << std::endl;
+						if (machine.getCurrentCredit() > 0){
+							std::cout << formatMoney(machine.ejectChange()) << " in coins drops into the change port." << std::endl;
+						}
+					}
+					else{
+						std::cout << "You can't purchase that." << std::endl;
+					}
+					pause();
+				}
+
+				else if (selection == items + 1){//user selects insert money
+					pay(machine);
+				}
+				else if (selection == items + 2){//user selects eject change
+					std::cout << "You push the eject change button.\n" << formatMoney(machine.ejectChange()) << " in coins drops into the change port." << std::endl;
+					pause();
+				}//user selection logic
+			}//valid input check
+		}//while loop
+	}//vending machine selection valid input check
 
 	return true;
 }

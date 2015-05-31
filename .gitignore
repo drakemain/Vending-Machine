@@ -1,0 +1,8 @@
+Debug/VendingMachine.obj
+*.lastbuildstate
+Debug/Vending Machine.tlog/link.write.1.tlog
+*.tlog
+Debug/Vending Machine.log
+*.pdb
+Debug/vc120.idb
+*.obj

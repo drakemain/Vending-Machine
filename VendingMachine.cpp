@@ -70,13 +70,9 @@ void VendingMachine::insertMoney(double insertedAmount){
 bool VendingMachine::dispenseItem(int item){
 	if (this->itemList.inInventory[item] > 0 && this->sufficientCreditCheck(item)){
 		this->itemList.inInventory[item] -= 1;
+		this->currentCredit -= this->itemList.cost[item];
 		return true;
 	} else{ return false; }
-}
-
-double VendingMachine::ejectChange(double changeToEject){
-	this->currentCredit = 0.00;
-	return changeToEject;
 }
 
 double VendingMachine::ejectChange(){
