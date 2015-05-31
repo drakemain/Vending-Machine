@@ -148,9 +148,9 @@ bool commenceVending(std::vector<VendingMachine*> VendingMachineList){
 					selection--;
 					std::cout << "You push the button corresponding to " << machine.getItem(selection) << '.' << std::endl;
 					if (machine.dispenseItem(selection)){
-						std::cout << "The machine dispensed " << machine.getItem(selection) << '.' << std::endl;
+						std::cout << "The machine dispenses " << machine.getItem(selection) << '.' << std::endl;
 						if (machine.getCurrentCredit() > 0){
-							std::cout << formatMoney(machine.ejectChange()) << " in coins drops into the change port." << std::endl;
+							std::cout << formatMoney(machine.ejectChange()) << " in coins drop into the change port." << std::endl;
 						}
 					}
 					else{
