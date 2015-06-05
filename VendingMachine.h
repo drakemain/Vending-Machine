@@ -1,28 +1,30 @@
+#pragma once
+
 #include <vector>
 #include <string>
 
-class VendingMachine{
+class VendingMachine {
 
 public:
     VendingMachine();
     VendingMachine(std::vector<std::string> customList, std::vector<double> cost, std::string customName);
     ~VendingMachine();
 
-    std::string getItem(int listElementIndex) const;        //returns name of item
-    int getInInventory(int listElementIndex) const;            //returns count of specific item
-    double getCost(int listElementIndex) const;                //returns cost of specific item
-    double getCurrentCredit() const;                        //returns amount of credit user has input to the machine
-    
-    int getItemSlots() const;                                //determines how many different items machine has capacity for
-    std::string getName() const;                            //returns the name of the machine
-    
-    void insertMoney(double insertedAmount);                //allows user to input credit
-    bool dispenseItem(int listElementIndex);                //reduces inventory count of item by 1
-    double ejectChange();                                    //returns remaining credit and sets to 0
+    std::string getItem(int listElementIndex) const; // returns name of item
+    int getInInventory(int listElementIndex) const;  // returns count of specific item
+    double getCost(int listElementIndex) const;      // returns cost of specific item
+    double getCurrentCredit() const;                 // returns amount of credit user has input to the machine
+
+    int getItemSlots() const;                        // determines how many different items machine has capacity for
+    std::string getName() const;                     // returns the name of the machine
+
+    void insertMoney(double insertedAmount);         // allows user to input credit
+    bool dispenseItem(int listElementIndex);         // reduces inventory count of item by 1
+    double ejectChange();                            // returns remaining credit and sets to 0
 
 
 private:
-    struct inventoryStruct{
+    struct InventoryStruct {
         std::vector<std::string> item;
         std::vector<double> cost;
         std::vector<int> inInventory;
@@ -31,9 +33,11 @@ private:
     std::string name;
     int itemSlots;
     double currentCredit;
-    inventoryStruct itemList;
-    inventoryStruct change;
+    InventoryStruct itemList;
+    InventoryStruct change;
 
-    void randomInventoryGenerator(double changeList[], std::vector<std::string> listOfItems, std::vector<double> costList, int maxInventory = 11);
-    bool sufficientCreditCheck(int listElementIndex) const;    //checks if the user has sufficient credit to purchase item
+    bool sufficientCreditCheck(int listElementIndex) const; //checks if the user has sufficient credit to purchase item
+
+    void randomInventoryGenerator(double changeList[], std::vector<std::string> listOfItems,
+                                  std::vector<double> costList, int maxInventory = 11);
 };
