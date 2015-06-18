@@ -7,7 +7,7 @@ class VendingMachine {
 
 public:
     VendingMachine();
-    VendingMachine(std::vector<std::string> customList, std::vector<double> cost, std::string customName);
+    VendingMachine(const std::vector<std::string> &customList, const std::vector<double> &cost, std::string customName);
     ~VendingMachine();
 
     std::string getItem(int listElementIndex) const; // returns name of item
@@ -38,6 +38,6 @@ private:
 
     bool sufficientCreditCheck(int listElementIndex) const; //checks if the user has sufficient credit to purchase item
 
-    void randomInventoryGenerator(double changeList[], std::vector<std::string> listOfItems,
-                                  std::vector<double> costList, int maxInventory = 11);
+    void randomInventoryGenerator(const std::vector<double> &changeList, const std::vector<std::string> &listOfItems,
+                                  const std::vector<double> &costList, int maxInventory = 11);
 };

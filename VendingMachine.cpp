@@ -2,8 +2,6 @@
 
 #include "VendingMachine.h"
 
-// TODO refactor: pass vectors by reference to avoid copying
-
 VendingMachine::VendingMachine() {
     this->name = "Soda Machine";
     this->currentCredit = 0.0;
@@ -36,26 +34,26 @@ VendingMachine::VendingMachine() {
 
     this->itemSlots = sodas.size();
 
-    double changeList[4] = { .01, .05, .1, .25 };
+    std::vector<double> changeList = { .01, .05, .1, .25 };
 
     randomInventoryGenerator(changeList, sodas, cost);
 }
 
-VendingMachine::VendingMachine(std::vector<std::string> customList, std::vector<double> cost,
+VendingMachine::VendingMachine(const std::vector<std::string> &customList, const std::vector<double> &cost,
                                std::string newName) {
     this->name = newName;
     this->itemSlots = customList.size();
     this->currentCredit = 0.0;
 
-    double changeList[4] = { .01, .05, .1, .25 };
+    std::vector<double> changeList = { .01, .05, .1, .25 };
 
     randomInventoryGenerator(changeList, customList, cost, itemSlots);
 }
 
 VendingMachine::~VendingMachine() {}
 
-void VendingMachine::randomInventoryGenerator(double changeList[], std::vector<std::string> items,
-                                              std::vector<double> costList, int maxInventory) {
+void VendingMachine::randomInventoryGenerator(const std::vector<double> &changeList, const std::vector<std::string> &items,
+                                              const std::vector<double> &costList, int maxInventory) {
     srand(time(0));
 
     for (int i = 0; i < itemSlots; i++) {
@@ -64,11 +62,8 @@ void VendingMachine::randomInventoryGenerator(double changeList[], std::vector<s
         itemList.inInventory.push_back(rand() % maxInventory);
     }
 
-    // TODO bug?
-    // does this actually work? usually you pass the array length as an extra parameter,
-    // or better yet, pass a vector
-    for (int i = 0; i < sizeof(changeList); i++) {
-        change.item.push_back(std::to_string(changeList[i]));
+    for (double itemChange : changeList) {
+        change.item.push_back(std::to_string(itemChange));
         change.inInventory.push_back((rand() % 90) + 10);
     }
 }
@@ -103,8 +98,8 @@ void VendingMachine::insertMoney(double insertedAmount) {
 
 bool VendingMachine::dispenseItem(int item) {
     if (this->itemList.inInventory[item] > 0 && this->sufficientCreditCheck(item)) {
-        // TODO refactor: post-decrement
-        this->itemList.inInventory[item] -= 1;
+        this->itemList.inInventory[item]--;
+
         this->currentCredit -= this->itemList.cost[item];
 
         return true;
@@ -117,15 +112,9 @@ double VendingMachine::ejectChange() {
     double changeToDispense = this->currentCredit;
     this->currentCredit = 0.00;
 
-    // TODO refactor: just return currentCredit
     return changeToDispense;
 }
 
 bool VendingMachine::sufficientCreditCheck(int item) const {
-    // TODO refactor: return expr
-    if (this->currentCredit >= this->itemList.cost[item]) {
-      return true;
-    } else {
-      return false;
-    }
+    return this->currentCredit >= this->itemList.cost[item];
 }

@@ -8,7 +8,7 @@
 void display(VendingMachine &machine);
 
 // allows the user to insert credit into a specific machine
-void pay(VendingMachine &machine, std::vector<double> currencyList = { .01, .05, .10, .25, 1.00 });
+void pay(VendingMachine &machine, const std::vector<double> &currencyList = { .01, .05, .10, .25, 1.00 });
 
 // Waits for user to press enter before continuing
 void pause();
@@ -24,7 +24,7 @@ std::string formatMoney(double);
 
 // TODO learning: probably unique_ptr or shared_ptr
 // initializes ultra-realistic vending machine simulation
-bool commenceVending(std::vector<VendingMachine*> VendingMachingList);
+bool commenceVending(const std::vector<VendingMachine*> &VendingMachingList);
 
 int main() {
     // a custom item list for VendingMachine constructor
@@ -68,7 +68,7 @@ void display(VendingMachine &machine) {
     }
 }
 
-void pay(VendingMachine &machine, std::vector<double> currencyList) {
+void pay(VendingMachine &machine, const std::vector<double> &currencyList) {
     bool paying = true;
 
     while (paying) {
@@ -151,7 +151,7 @@ bool inputIsValid(int valueToCheck) {
     }
 }
 
-bool commenceVending(std::vector<VendingMachine*> VendingMachineList) {
+bool commenceVending(const std::vector<VendingMachine*> &VendingMachineList) {
     system("CLS");
 
     int selection;
